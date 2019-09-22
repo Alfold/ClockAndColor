@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<!--
+Created using JS Bin
+http://jsbin.com
+
+Copyright (c) 2019 by Alfold (http://jsbin.com/bakedef/3/edit)
+
+Released under the MIT license: http://jsbin.mit-license.org
+-->
+<meta name="robots" content="noindex">
+<html>
+<head>
+
+<link href="https://fonts.googleapis.com/css?family=Exo+2&display=swap" rel="stylesheet">
+  
+<meta name="description" content="Színóra - HTML, CSS, JS - SAJÁT">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>JS Bin</title>
+<style id="jsbin-css">
+/*😊 CSS alapbeállítás törlése */
+* { margin: 0; padding: 0; }
+
+/😊* --- rendezd középre az órát --- */
+#clock {
+  text-align: center;
+}
+
+/* --- 
+😉 +1 tipp: Ha valami nem működik, érdemes mindig kipróbálni először, hogy a CSS-kiválasztó (CSS selector) tényleg arra a dologra hivatkozik, amelyre szeretnéd. Ennek egy egyszerű trükkje például, ha egy, az oldalon látszó elemre ráhívod a display:none; stílust, és figyeled, hogy eltűnik-e az oldalról. Ha eltűnik (és csak az tűnik el, amit szerettél volna), akkor a selector valószínűleg jól funkcionál. Például most:
+
+#clock {
+  display: none;
+}
+--- */
+
+html, body {
+  height: 100%;
+}
+
+/* ---
+😉+1 tipp: Alapesetben minden elemre, amely megjelenik egy weboldalon, a position: static; szabály van érvényben. A dolgok megjelennek egymás után balról jobbra és fentről lefelé, ahogy kiférnek. Ha szeretnél ettől az alapvető magatartástól eltérni, akkor lesz szükséged arra, hogy a position tulajdonságot megváltoztasd.
+
+😊A position:relative; azt mondta meg a böngészőnek, hogy szeretnéd, ha a kiválasztott elem nem a normális szabályok szerint jelenne meg, hanem a normális pozíciójához képest valahol máshol. Jelen esetben például a tartalmazó konténer teljes magasságának tetejétől számított 50%-ánál (top:50%;). Írd át az 50%-ot más számra, és nézd meg, hogy mi történik.
+
+A #clock elemünket a body elem foglalja magában, azt pedig a html elem. Ha mind a kettő magasságát 100%-ra állítod, akkor a böngészőablak magassága lesz az a viszonyítási alap, amelyhez képest a top:50%; érvényesülni tud.
+--- */
+
+/*
+😊
+Google Fonts
+Nyisd meg a Google Fonts oldalt, és nézz körül a betűtípusok között. Ha valamelyik szöveg helyére beírod a számlapon látható 12:13:14 tartalmat, könnyebb elképzelni a végeredményt.
+
+Az "Add to collection" gombra kattintva, kiválasztottad a betűtípusodat.
+
+😉+1 tipp: Minél több betűtípust és változatot használsz, annál lassabban tölthet be az oldalad. Ezt jelzi az oldalon látható "page load" mutató is.
+
+😊Ha lejjebb görgetsz az oldalon, megtalálod az "Add this code to your website" részt. Ezt a HTML-kód head részébe kell bemásolnod.
+Még lejjebb görgetve még a CSS-szabályt is megtalálod.
+
+😉Pro tipp: Ha valaki úgy érkezik a weblapodra, hogy egy másik oldalon már letöltötte a böngészője ugyanezt a betűtípust, akkor nem kell még egyszer letöltenie. Ezért érdemes például a Google Fonts betűkészleteit használni.
+
+😊 a Date() arra jó, hogy az idővel és a dátummal végezhessünk különböző műveleteket.
+
+Az előző lecke végi kód valami hasonlót adhatott válaszként:
+
+> console.log(Date());
+> Thu Jun 09 2016 18:10:08 GMT+0200 (CEST)
+
+A kódban szereplő new (new Date()) a teljes objektumról készít egy másolatot, és az előre megírt metódusait is használni tudod majd.
+
+😊 document.getElementById('clock').innerHTML = 'hello world';Copy
+Nézzük mi történik, lépésenként:
+
+a document objektummal megmondjuk, hogy most a HTML-dokumentumunkkal szeretnénk valamit kezdeni,
+a .getElementById() fog a HTML-dokumentumban keresni egy bizonyos elemet, az egyedi azonosítója alapján,
+a zárójelben tudjuk megadni paraméterként az egyedi azonosítót ('clock'),
+a .innerHTML az azonosító alapján megtalált elem egy tulajdonságát, a belső HTML tartalmát fogja meghatározni,
+az egyenlőségjel pedig az utána álló résszel teszi egyenlővé ezt a tulajdonságot.
+
+😊Logikailag arra lenne szükség, hogy:
+
+// ha
+// a 'seconds' változó kisebb, mint 10
+// legyen előtte a szöveggé konvertáláskor egy nullaCopy
+Ez Javascriptben, úgy, hogy a gép is megértse, a következőképpen néz ki:
+
+if (seconds < 10) {
+  seconds = '0' + seconds;
+}
+
+😊A Javascriptben az egyes jól körülhatárolt feladatokra írt kódblokkokat funkciókba szervezheted. Így egyrészt átláthatóbbá, könnyebben érthetővé válik, hogy mi történik, másrészt pedig egy funkciót elég egyszer megírni, utána többször is meghívhatod, lefuttathatod a nevével hivatkozva, anélkül, hogy az egészet újra kellene gépelned.
+Egy funkció például megadható így:
+
+function functionName(parameters) {
+  // a kod, amit futtatni szeretnel
+}
+
+Javascriptben a funkciókat meghívhatod (invoke) a nevük segítségével, a következőképpen:
+
+colorClock();
+
+😊Szeretnénk, ha minden másodpercben lefutna a kód. Bővítsd a már megírt funkciódat a végén a következővel:
+
+...
+document.getElementById('clock').innerHTML = clockFace;
+
+setTimeout(function() {
+  colorClock();
+}, 1000);
+
+}
+
+colorClock(); 
+ 
+ 
+Copy
+A setTimeout() egy olyan előre megírt metódus, amely bizonyos idő elteltével lefuttat egy megadott kódot. A felépítése (szintaxisa) a következő:
+
+setTimeout(function(){  }, 5000);Copy
+Paramétereket fogad a zárójelek (()) közé. Az első paraméter egy név nélküli funkció lesz (function(){}), amelyben a kapcsos zárójelek közé adhatod meg a kódot, amit szeretnél futtatni. A második paraméter pedig az idő, miliszekundumokban (5000 ms = 5 másodperc), amelynek elteltével szeretnéd lefuttatni azt.
+
+Tehát az előzőekben megadott kód a következőt végzi el: amikor meghívod, vár egy másodpercet, és lefuttatja a colorClock nevű funkciót.
+
+😊Javascripttel igazából minden olyan dolgot átállíthatsz, amelyet HTML vagy CSS segítségével adhatnál meg. A lényege nem ez (hiszen általában ezeket bonyolultabb így megtenni), hanem az, hogy mindezt a weboldalad látogatójának böngészőjében teheted meg, reagálva bizonyos dolgokra. Így lesz a weblapod interaktív.
+
+Például az oldal háttérszínét (bár CSS segítségével is megtehetnéd, egy kicsit egyszerűbben), így is pirosra változtathatod:
+
+document.body.style.background = 'red';Copy
+Ahol:
+
+a document objektummal megmondjuk, hogy most a HTML-dokumentumunkkal szeretnénk valamit kezdeni,
+a .body mutatja, hogy a <body> elemmel,
+a .style a stílusát szabályozza,
+a .background, hogy a háttér tulajdonságot szabályozzuk.
+Az egyenlőségjellel állítjuk be a megadott tulajdonságot a kívánt értékre.
+
+😊A színek hexa (16-os számrendszerbeni) kódjai egy kettős keresztet követően hat karakterből állnak (például a halvány tengerzöld kódja: #20B2AA).
+
+Az elválasztó kettőspontokat leszámítva az óránkra kiírt idő is pont hat karakterből áll.
+
+Adj meg egy új változót a colorClock funkciódon belül, amelyben ezt a "pillanatnyi színt" rögzíted:
+
+var hexColor = '#' + hours + minutes + seconds;
+*/
+
+
+#clock {
+  text-align: right;
+  position: relative;
+  top: 65%;
+  font-family: 'Exo 2', sans-serif;
+  font-size: 68px;
+  margin: 5%;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</style>
+</head>
+<body>
+
+<div id="clock">12:13:14</div>
+
+<script id="jsbin-javascript">
+function colorClock(){
+
+
+var date = new Date(); /* new Date beágyazott objekt, dátum, időt mutat */
+
+/* date.get a Date objektumból veszi az órát, percet, másodpercet*/
+var hours = date.getHours();
+var minutes = date.getMinutes();
+var seconds = date.getSeconds();
+
+/* if feltétel, hogy mindig két számjegyű legyen a megjelenés*/
+if (hours < 10) {
+  hours = '0' + hours;
+}
+
+if (minutes < 10) {
+  minutes = '0' + minutes;
+}
+
+if (seconds < 10) {
+  seconds = '0' + seconds;
+}
+
+var clockFace = hours + ':' + minutes + ':' + seconds;
+
+/* a konzol kiírja az időt*/
+console.log(clockFace);
+
+/* az output a konzolban kiírt időt (változót) jeleníti meg az id #clock tartalma helyett (de azzal a CSS-el, amit nem írtunk még felül a JS-ben, lsd lent)*/
+document.getElementById('clock').innerHTML = clockFace;
+
+/* időzítő, böngészőbe beégetett eleme is van*/
+setTimeout(function() {
+  colorClock();
+}, 1000);
+
+/* kihasználjuk, hogy a hex szín is 6 kerakter, mint az idő*/
+var hexColor = '#' + hours + 55 + seconds ;
+
+/*body háttérszínt és idő betűszínt változtatjuk a CSS-t felülírva -> interaktiv*/
+document.body.style.background = hexColor;
+  
+document.getElementById('clock').style.color = 'white';
+  
+}
+
+ colorClock();
+
+
+
+
+
+
+
+
+
+
+</script>
+</body>
+</html>
